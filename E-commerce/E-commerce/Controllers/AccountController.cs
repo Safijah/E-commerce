@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace E_commerce.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")]   
     [ApiController]
     public class AccountController : ControllerBase
     {
