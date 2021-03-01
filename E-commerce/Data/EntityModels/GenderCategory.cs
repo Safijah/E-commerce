@@ -6,7 +6,7 @@ namespace Data.EntityModels
 {
     public class GenderCategory
     {
-        public int GenderCategoryID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
     }
 }

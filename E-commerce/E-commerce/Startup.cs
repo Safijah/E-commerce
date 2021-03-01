@@ -84,7 +84,7 @@ namespace E_commerce
 
             app.UseRouting();
             app.UseAuthentication();
-            app.UseCors("CityPolicy");
+            app.UseCors("Policy");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

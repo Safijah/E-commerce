@@ -65,7 +65,7 @@ namespace E_commerce.Controllers
                     customer.Account = user;
                     _customerService.AddCustomer(customer);
 
-                    return Ok(result); // Status Code: 200 
+                    return Ok(new { message= "User created successfully!" }); // Status Code: 200 
                 }
 
 

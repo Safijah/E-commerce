@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class Order
     {
-        public int OrderID { get; set; }
+        public int ID { get; set; }
         public DateTime Date { get; set; }
         public float UnitCost { get; set; }
         public int Quantity { get; set; }

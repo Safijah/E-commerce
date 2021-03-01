@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class Purchase
     {
-        public int PurchaseID { get; set; }
+        public int ID { get; set; }
         public DateTime Date { get; set; }
         public int Quantity { get; set; }
 

@@ -6,7 +6,7 @@ namespace Data.EntityModels
 {
     public class Size
     {
-        public int SizeID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
     }
 }

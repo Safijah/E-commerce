@@ -6,7 +6,7 @@ namespace Data.EntityModels
 {
     public class PaymentMethod
     {
-        public int PaymentMethodID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
     }
 }

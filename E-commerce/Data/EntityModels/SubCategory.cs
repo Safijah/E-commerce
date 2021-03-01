@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class SubCategory
     {
-        public int SubCategoryID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         [ForeignKey(nameof(CategoryID))]
         public virtual Category Category { get; set; }

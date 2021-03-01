@@ -9,7 +9,7 @@ namespace Data.EntityModels
     public class HistoryOfPayments
     {
        
-        public int HistoryOfPaymentsID { get; set; }
+        public int ID { get; set; }
         public DateTime Date { get; set; }
         public float Price { get; set; }
         [ForeignKey(nameof(CustomerID))]

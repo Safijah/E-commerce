@@ -8,7 +8,7 @@ namespace Data.EntityModels
 {
     public class ShoppingCart
     {
-        public int ShoppingCartID { get; set; }
+        public int ID { get; set; }
         public float TotalPrice { get; set; }
         public DateTime Date { get; set; }
         public string Address { get; set; }

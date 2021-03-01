@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class CreditCard
     {
-        public int CreditCardID { get; set; }
+        public int ID { get; set; }
         public string CardType { get; set; }
         public int CardNumber { get; set; }
         public int ExpDate { get; set; }

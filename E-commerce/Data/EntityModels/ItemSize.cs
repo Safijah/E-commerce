@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class ItemSize
     {
-        public int ItemSizeID { get; set; }
+        public int ID { get; set; }
         [ForeignKey(nameof(SizeID))]
         public virtual Size Size { get; set; }
         public int SizeID { get; set; }

@@ -6,7 +6,7 @@ namespace Data.EntityModels
 {
     public class City
     {
-        public int CityID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public int PostalCode { get; set; }
     }

@@ -6,7 +6,7 @@ namespace Data.EntityModels
 {
     public class Coupon
     {
-        public int CouponID { get; set; }
+        public int ID { get; set; }
         public string Code { get; set; }
         public DateTime ExpiredDate { get; set; }
         public float Value { get; set; }

@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class Warehouse
     {
-        public int WarehouseID { get; set; }
+        public int ID { get; set; }
         public int PreviousBalance { get; set; }
         public int Income { get; set; }
         public int Sold { get; set; }

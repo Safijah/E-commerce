@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class Inventory
     {
-        public int InventoryID { get; set; }
+        public int ID { get; set; }
         public int Quantity { get; set; }
         public bool IsAvailable { get; set; }
         [ForeignKey(nameof(BranchID))]

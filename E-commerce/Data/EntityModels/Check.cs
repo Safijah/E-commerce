@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class Check
     {
-        public int CheckID { get; set; }
+        public int ID { get; set; }
         public float Price { get; set; }
         public float Discount { get; set; }
         public float TotalPrice { get; set; }

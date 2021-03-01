@@ -7,7 +7,7 @@ namespace Data.EntityModels
 {
     public class ItemCostHistory
     {
-        public int ItemCostHistoryID { get; set; }
+        public int ID { get; set; }
         public DateTime ModifiedDate { get; set; }
         public float PreviousPrice { get; set; }
         public float CurrentPrice { get; set; }
