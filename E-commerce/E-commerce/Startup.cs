@@ -62,6 +62,13 @@ namespace E_commerce
                 };
             });
             services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IBrandCategoryService, BrandCategoryService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IGenderCategoryService, GenderCategoryService>();
+            services.AddTransient<ISizeService, SizeService>();
+            services.AddTransient<ISubCategoryService, SubCategoryService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("Policy",

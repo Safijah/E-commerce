@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Core.Services
 {
-    class GenderCategoryService : IGenderCategoryService
+   public class GenderCategoryService : IGenderCategoryService
     {
         private E_commerceDB _context;
         public GenderCategoryService(E_commerceDB context)
