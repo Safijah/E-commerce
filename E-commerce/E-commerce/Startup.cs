@@ -41,7 +41,7 @@ namespace E_commerce
             options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
             services.AddIdentityCore<Account>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<E_commerceDB>();
+                .AddEntityFrameworkStores<E_commerceDB>().AddDefaultTokenProviders();
             services.Configure<AccountSettings>(Configuration.GetSection("AccountSettings"));
             var key = Encoding.UTF8.GetBytes(Configuration["AccountSettings:JWT_Secret"].ToString());
             services.AddAuthentication(x =>
@@ -88,7 +88,7 @@ namespace E_commerce
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseCors("Policy");
