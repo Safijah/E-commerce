@@ -17,11 +17,9 @@ namespace Data.EntityModels
         [ForeignKey(nameof(BrandCategoryID))]
         public virtual BrandCategory BrandCategory { get; set; }
         public int BrandCategoryID { get; set; }
-        [ForeignKey(nameof(GenderCategoryID))]
-        public virtual GenderCategory GenderCategory { get; set; }
-        public int GenderCategoryID { get; set; }
-        [ForeignKey(nameof(SubCategoryID))]
-        public virtual SubCategory SubCategory { get; set; }
-        public int SubCategoryID { get; set; }
+        [ForeignKey(nameof(GenderSubCategoryID))]
+        public virtual GenderSubCategory GenderSubCategory { get; set; }
+        public int GenderSubCategoryID { get; set; }
+
     }
 }
