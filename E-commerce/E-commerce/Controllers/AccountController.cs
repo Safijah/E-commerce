@@ -76,10 +76,15 @@ namespace E_commerce.Controllers
         }
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> LoginAsync(LoginVM model)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginVM model)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest(new { message = "There is no user with that Email address." });
+               
+            }
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
