@@ -25,5 +25,11 @@ namespace E_commerce.Controllers
         {
             return Ok(_subCategoryService.GetAll());
         }
+       
+        [HttpGet("{id}")]
+        public IActionResult GetByGenderId(int id)
+        {
+            return Ok(_subCategoryService.GetSubCategory(id));
+        }
     }
 }

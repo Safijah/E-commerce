@@ -8,6 +8,7 @@ namespace Core.Interfaces
    public  interface ISubCategoryService
     {
          List<SubCategory> GetAll();
+        List<SubCategory> GetSubCategory(int id);
         
     }
 }
