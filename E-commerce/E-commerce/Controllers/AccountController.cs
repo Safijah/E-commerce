@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Core.Interfaces;
 using Data.EntityModels;
 using Data.ViewModels;
+using E_commerce.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -143,6 +144,54 @@ namespace E_commerce.Controllers
             }
 
             return BadRequest("Email did not confirm");
+        }
+        [HttpPost]
+        [Route("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return NotFound();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return BadRequest("No user associated with email");
+               
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={email}&token={validToken}";
+
+            await _emailService.SendEmailAsync(email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+                $"<p>To reset your password <a href='{url}'>Click here</a></p>");
+            return Ok("Reset password URL has been sent to the email successfully!");
+
+
+        }
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordVM model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return BadRequest("No user associated with email");
+                
+
+            if (model.NewPassword != model.ConfirmPassword)
+                  return BadRequest("Password doesn't match its confirmation");
+            if(ModelState.IsValid)
+            {
+                var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
+                string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+                var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
+                if (result.Succeeded)
+                    return Ok("Password has been reset successfully!");
+            }
+           
+
+            return BadRequest("Some properties are not valid");
         }
     }
 }

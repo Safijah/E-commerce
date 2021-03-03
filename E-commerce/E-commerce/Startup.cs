@@ -68,7 +68,7 @@ namespace E_commerce
             services.AddTransient<IGenderCategoryService, GenderCategoryService>();
             services.AddTransient<ISizeService, SizeService>();
             services.AddTransient<ISubCategoryService, SubCategoryService>();
-
+            services.AddRazorPages();
             services.AddCors(options =>
             {
                 options.AddPolicy("Policy",
@@ -96,6 +96,7 @@ namespace E_commerce
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
             });
         }
