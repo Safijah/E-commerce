@@ -68,6 +68,7 @@ namespace E_commerce
             services.AddTransient<IGenderCategoryService, GenderCategoryService>();
             services.AddTransient<ISizeService, SizeService>();
             services.AddTransient<ISubCategoryService, SubCategoryService>();
+            services.AddTransient<IItemService, ItemService>();
             services.AddRazorPages();
             services.AddCors(options =>
             {
