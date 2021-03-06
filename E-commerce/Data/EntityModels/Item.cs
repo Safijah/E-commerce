@@ -12,8 +12,6 @@ namespace Data.EntityModels
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
-      
-        public string Images { get; set; }
         [ForeignKey(nameof(BrandCategoryID))]
         public virtual BrandCategory BrandCategory { get; set; }
         public int BrandCategoryID { get; set; }
