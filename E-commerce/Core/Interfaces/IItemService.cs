@@ -8,7 +8,7 @@ namespace Core.Interfaces
 {
    public  interface IItemService
     {
-        Item GetItem(int id);
+        GetItemIDVM GetItem(int id);
         GetItemVM GetAll();
     }
 }

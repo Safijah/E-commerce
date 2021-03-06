@@ -40,9 +40,22 @@ namespace Core.Services
 
         }
 
-        public Item GetItem(int id)
+        public GetItemIDVM GetItem(int id)
         {
-            return _context.Item.First(x => x.ID == id);
+            var item = _context.Item.Find(id);
+            GetItemIDVM vm = new GetItemIDVM();
+            vm.Description = item.Description;
+            vm.SerialNumber = item.SerialNumber;
+            vm.Name = item.Name;
+            vm.Price = item.Price;
+            vm.BrandCategory = _context.BrandCategory.Where(a => a.ID == item.BrandCategoryID).FirstOrDefault().Name;
+            var x = _context.GenderSubCategory.Find(item.GenderSubCategoryID);
+            var b = _context.GenderCategory.Find(x.GenderCategoryID);
+            vm.GenderCategory = b.Name;
+            var c = _context.SubCategory.Find(x.SubCategoryID);
+            vm.SubCategory = c.Name;
+            vm.Images = _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList();
+            return vm;
         }
     }
 }
