@@ -14,5 +14,6 @@ namespace Data.ViewModels
         public string GenderCategory { get; set; }
         public string SubCategory { get; set; }
         public List<byte[]> Images { get; set; }
+        public List<object> Sizes { get; set; }
     }
 }
