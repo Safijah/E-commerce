@@ -193,5 +193,30 @@ namespace E_commerce.Controllers
 
             return BadRequest("Some properties are not valid");
         }
+        [HttpPost]
+        [Route("InviteFriend")]
+        public async Task<IActionResult> InviteFriend(string UserEmail, string FriendEmail)
+        {
+            string url = $"{_configuration["AppUrl"]}/account/SendCoupon?UserEmail={UserEmail}";
+            var user = await _userManager.FindByEmailAsync(UserEmail);
+            if(user==null)
+            {
+                return BadRequest(new { message = "There is no user with that Email address." });
+            }
+
+            await _emailService.SendEmailAsync(FriendEmail, "E-commerce", "<h1>Your friend "+user.FirstName+" "+ user.LastName+ " invite you to join us</h1>" +
+                $"<p>To send  your friend coupon <a href='{url}'>Click here</a></p>");
+            return Ok("You invite your friend");
+
+        }
+        [HttpGet]
+        [Route("SendCoupon")]
+        public async Task<IActionResult> SendCoupon(string UserEmail)
+        {
+  
+            await _emailService.SendEmailAsync(UserEmail, "E-commerce", "<h1>Your friend accepted your invitation</h1>" +
+                $"<p>Use the following discount code for your next purchase   ABCD656</p>");
+            return Ok("Code successfully sent");
+        }
     }
 }
