@@ -55,6 +55,14 @@ namespace Core.Services
             var c = _context.SubCategory.Find(x.SubCategoryID);
             vm.SubCategory = c.Name;
             vm.Images = _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList();
+            
+            var size = _context.ItemSize.Where(a=>a.ItemID==item.ID).ToList();
+            List<object> sizes = new List<object>();
+            foreach(var k in size)
+            {
+                sizes.Add(_context.Size.Where(a => a.ID == k.SizeID ).FirstOrDefault());
+            }
+            vm.Sizes = sizes;
             return vm;
         }
     }
