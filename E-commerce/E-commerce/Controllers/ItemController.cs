@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,9 +25,9 @@ namespace E_commerce.Controllers
            
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(ItemFilterVM filter)
         {
-            return Ok(_itemService.GetAll());
+            return Ok(_itemService.GetAll(filter));
         }
 
         [HttpGet("{id}")]
@@ -37,5 +38,7 @@ namespace E_commerce.Controllers
           
 
         }
+     
+        
     }
 }

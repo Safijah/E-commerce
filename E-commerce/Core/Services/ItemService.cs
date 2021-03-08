@@ -18,9 +18,13 @@ namespace Core.Services
             _context = context;
             
         }
-        public GetItemVM GetAll()
+        public GetItemVM GetAll(ItemFilterVM filter )
         {
-            var items = _context.Item.Select(a => new GetItemVM.Rows
+            var items = _context.Item.Include(a=>a.GenderSubCategory).ThenInclude(a=>a.SubCategory).Where(a=>(a.BrandCategoryID==filter.BrandCategoryID || filter.BrandCategoryID==0)
+            && (a.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
+           ( a.GenderSubCategory.SubCategoryID==filter.SubCategoryID || filter.SubCategoryID==0)
+           && (a.GenderSubCategory.SubCategory.CategoryID==filter.CategoryID || filter.CategoryID==0))
+                .Select(a => new GetItemVM.Rows
             {
                 ID = a.ID,
                 SerialNumber = a.SerialNumber,
@@ -34,7 +38,23 @@ namespace Core.Services
 
             }).ToList();
             GetItemVM vm = new GetItemVM();
-            vm.Items = items;
+            if (filter.SortTypeID == 2)
+            {
+                vm.Items = items.OrderByDescending(a => a.Price).ToList();
+            }
+            else
+                if (filter.SortTypeID == 3)
+            {
+                vm.Items = items.OrderBy(a => a.Name).ToList();
+            }
+            else
+                if (filter.SortTypeID == 1)
+            {
+                vm.Items = items.OrderBy(a => a.Price).ToList();
+            }
+            else
+                vm.Items = items;
+                
             return vm;
 
 
@@ -65,5 +85,7 @@ namespace Core.Services
             vm.Sizes = sizes;
             return vm;
         }
+       
+        
     }
 }
