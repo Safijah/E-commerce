@@ -29,9 +29,9 @@ namespace E_commerce.Controllers
         private readonly AccountSettings _accSettings;
         private IEmailService _emailService;
         private IConfiguration _configuration;
-
+        private ICouponService _couponService;
         public AccountController(UserManager<Account> userManager,  RoleManager<IdentityRole> roleManager,
-            ICustomerService customerService, IOptions<AccountSettings> accSettings,IEmailService emailService, IConfiguration configuration)
+            ICustomerService customerService, IOptions<AccountSettings> accSettings,IEmailService emailService, IConfiguration configuration, ICouponService couponService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -39,6 +39,7 @@ namespace E_commerce.Controllers
             _accSettings = accSettings.Value;
             _emailService = emailService;
             _configuration = configuration;
+            _couponService = couponService;
 
         }
         [HttpPost("Register")]
@@ -213,9 +214,9 @@ namespace E_commerce.Controllers
         [Route("SendCoupon")]
         public async Task<IActionResult> SendCoupon(string UserEmail)
         {
-  
+            var code = _couponService.GetCode();
             await _emailService.SendEmailAsync(UserEmail, "E-commerce", "<h1>Your friend accepted your invitation</h1>" +
-                $"<p>Use the following discount code for your next purchase   ABCD656</p>");
+                $"<p>Use the following discount code for your next purchase "+code + "</p>");
             return Ok("Code successfully sent");
         }
     }
