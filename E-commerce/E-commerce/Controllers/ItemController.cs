@@ -38,7 +38,13 @@ namespace E_commerce.Controllers
           
 
         }
-     
-        
+        [HttpGet]
+        [Route("GetBySearch")]
+        public IActionResult Get(string search)
+        {
+            return Ok(_itemService.GetBySearch(search));
+        }
+
+
     }
 }

@@ -85,7 +85,28 @@ namespace Core.Services
             vm.Sizes = sizes;
             return vm;
         }
-       
-        
+
+       public  GetItemVM GetBySearch(string search)
+        {
+            var items = _context.Item.Where(a=>(a.Name.ToLower().Contains(search.ToLower())) || (a.Description.ToLower().Contains(search.ToLower()))).
+                Select(a => new GetItemVM.Rows
+               {
+                   ID = a.ID,
+                   SerialNumber = a.SerialNumber,
+                   Name = a.Name,
+                   Description = a.Description,
+                   Price = a.Price,
+                   BrandCategory = _context.BrandCategory.Where(b => b.ID == a.BrandCategoryID).FirstOrDefault().Name,
+                   GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
+                   SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
+                   Image = _context.ItemImage.Where(f => f.ItemID == a.ID).FirstOrDefault().Image
+
+               }).ToList();
+
+            GetItemVM vm = new GetItemVM();
+            vm.Items = items;
+            return vm;
+
+        }
     }
 }
