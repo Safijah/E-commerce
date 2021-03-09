@@ -22,9 +22,9 @@ namespace E_commerce.Controllers
         {
             _logger = logger;
             _itemService = itemService;
-           
+
         }
-        [HttpGet]
+        [HttpPost]
         public IActionResult Get(ItemFilterVM filter)
         {
             return Ok(_itemService.GetAll(filter));
