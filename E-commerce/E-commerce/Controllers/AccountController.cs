@@ -162,10 +162,10 @@ namespace E_commerce.Controllers
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={email}&token={validToken}";
+            //string url = $"{_configuration["AppUrl"]}/ResetPassword?email={email}&token={validToken}";
 
             await _emailService.SendEmailAsync(email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
-                $"<p>To reset your password <a href='{url}'>Click here</a></p>");
+                $"<p>To reset your password <a href='http://localhost:3000/Registration'>Click here</a></p>");
             return Ok("Reset password URL has been sent to the email successfully!");
 
 
@@ -198,7 +198,7 @@ namespace E_commerce.Controllers
         [Route("InviteFriend")]
         public async Task<IActionResult> InviteFriend(string UserEmail, string FriendEmail)
         {
-            string url = $"{_configuration["AppUrl"]}/account/SendCoupon?UserEmail={UserEmail}";
+            //string url = $"{http://localhost:3000/Registration}";
             var user = await _userManager.FindByEmailAsync(UserEmail);
             if(user==null)
             {
@@ -206,7 +206,7 @@ namespace E_commerce.Controllers
             }
 
             await _emailService.SendEmailAsync(FriendEmail, "E-commerce", "<h1>Your friend "+user.FirstName+" "+ user.LastName+ " invite you to join us</h1>" +
-                $"<p>To send  your friend coupon <a href='{url}'>Click here</a></p>");
+                $"<p>To send  your friend coupon please <a href='http://localhost:3000/Registration'>Register</a></p>");
             return Ok("You invite your friend");
 
         }
