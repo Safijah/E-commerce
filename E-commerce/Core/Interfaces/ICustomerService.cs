@@ -8,5 +8,8 @@ namespace Core.Interfaces
     public interface ICustomerService
     {
         void AddCustomer(Customer customer);
+        Customer GetCustomer(string CustomerID);
+
+
     }
 }

@@ -37,6 +37,7 @@ namespace Data.DbContext
         public DbSet<Warehouse> Warehouse { get; set; }
         public DbSet<ItemImage> ItemImage { get; set; }
         public DbSet<GenderSubCategory> GenderSubCategory { get; set; }
+        public DbSet<Friend> Friend { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

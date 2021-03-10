@@ -19,5 +19,10 @@ namespace Core.Services
             _context.Add(customer);
             _context.SaveChanges();
         }
+        public Customer GetCustomer(string CustomerID)
+        {
+            return _context.Customer.Find(CustomerID);
+        }
+        
     }
 }

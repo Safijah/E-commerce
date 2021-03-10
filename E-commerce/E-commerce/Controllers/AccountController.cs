@@ -30,8 +30,10 @@ namespace E_commerce.Controllers
         private IEmailService _emailService;
         private IConfiguration _configuration;
         private ICouponService _couponService;
+        private IFriendService _friendService;
         public AccountController(UserManager<Account> userManager,  RoleManager<IdentityRole> roleManager,
-            ICustomerService customerService, IOptions<AccountSettings> accSettings,IEmailService emailService, IConfiguration configuration, ICouponService couponService)
+            ICustomerService customerService, IOptions<AccountSettings> accSettings,IEmailService emailService, IConfiguration configuration, ICouponService couponService,
+            IFriendService friendService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -40,6 +42,7 @@ namespace E_commerce.Controllers
             _emailService = emailService;
             _configuration = configuration;
             _couponService = couponService;
+            _friendService = friendService;
 
         }
         [HttpPost("Register")]
@@ -80,6 +83,14 @@ namespace E_commerce.Controllers
 
                     await _emailService.SendEmailAsync(user.Email, "Confirm your email", $"<h1>Hi,</h1>" +
                         $"<p>Please confirm your email by <a href='{url}'>Clicking here</a></p>");
+                    if(_friendService.CheckFriend(user.Email))
+                    {
+                        var CustomerID = _friendService.GetUserID(user.Email);
+                        var customer1 = await _userManager.FindByIdAsync(CustomerID);
+                        await _emailService.SendEmailAsync(customer1.Email, "E-commerce", "<h1>Your friend accepted your invitation</h1>" +
+                        $"<p>Congratulations, we've added a discount to your account </p>");
+
+                    }
 
                     return Ok(new { message= "User created successfully!" }); // Status Code: 200 
                 }
@@ -196,17 +207,20 @@ namespace E_commerce.Controllers
         }
         [HttpPost]
         [Route("InviteFriend")]
-        public async Task<IActionResult> InviteFriend(string UserEmail, string FriendEmail)
+        public async Task<IActionResult> InviteFriend(string UserID , string FriendEmail)
         {
             //string url = $"{http://localhost:3000/Registration}";
-            var user = await _userManager.FindByEmailAsync(UserEmail);
+            var user = await _userManager.FindByIdAsync(UserID);
             if(user==null)
             {
                 return BadRequest(new { message = "There is no user with that Email address." });
             }
+            
 
             await _emailService.SendEmailAsync(FriendEmail, "E-commerce", "<h1>Your friend "+user.FirstName+" "+ user.LastName+ " invite you to join us</h1>" +
                 $"<p>To send  your friend coupon please <a href='http://localhost:3000/Registration'>Register</a></p>");
+            _friendService.AddFriend(UserID,FriendEmail);
+            
             return Ok("You invite your friend");
 
         }

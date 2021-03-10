@@ -12,7 +12,8 @@ namespace Data.EntityModels
         public string ID { get; set; }
         public float  TotalSpent { get; set; }
         public virtual Account Account { get; set; }
-
+       
+        
 
     }
 }

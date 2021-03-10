@@ -4,14 +4,16 @@ using Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(E_commerceDB))]
-    partial class E_commerceDBModelSnapshot : ModelSnapshot
+    [Migration("20210310123242_friend")]
+    partial class friend
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,10 +190,15 @@ namespace Data.Migrations
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("FriendID")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<float>("TotalSpent")
                         .HasColumnType("real");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("FriendID");
 
                     b.ToTable("Customer");
                 });
@@ -213,20 +220,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.EntityModels.Friend", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CustomerID")
+                    b.Property<string>("E_mailFriends")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("E_mailFriends")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CustomerID");
+                    b.HasKey("E_mailFriends");
 
                     b.ToTable("Friend");
                 });
@@ -877,6 +874,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.EntityModels.Customer", b =>
                 {
+                    b.HasOne("Data.EntityModels.Friend", "Friend")
+                        .WithMany()
+                        .HasForeignKey("FriendID");
+
                     b.HasOne("Data.EntityModels.Account", "Account")
                         .WithMany()
                         .HasForeignKey("ID")
@@ -897,13 +898,6 @@ namespace Data.Migrations
                         .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.EntityModels.Friend", b =>
-                {
-                    b.HasOne("Data.EntityModels.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID");
                 });
 
             modelBuilder.Entity("Data.EntityModels.GenderSubCategory", b =>
