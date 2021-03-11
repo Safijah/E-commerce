@@ -9,7 +9,7 @@ namespace Data.EntityModels
     public class Friend
     {
         public int ID { get; set; }
-        public string E_mailFriends { get; set; }
+        public string EmailFriend { get; set; }
         [ForeignKey(nameof(CustomerID))]
         public virtual Customer Customer  { get; set; }
         public string CustomerID   { get; set; }

@@ -87,8 +87,10 @@ namespace E_commerce.Controllers
                     {
                         var CustomerID = _friendService.GetUserID(user.Email);
                         var customer1 = await _userManager.FindByIdAsync(CustomerID);
+
+                        var code = _couponService.GetCode();
                         await _emailService.SendEmailAsync(customer1.Email, "E-commerce", "<h1>Your friend accepted your invitation</h1>" +
-                        $"<p>Congratulations, we've added a discount to your account </p>");
+                            $"<p>Use the following discount code for your next purchase " + code + "</p>");
 
                     }
 
@@ -209,11 +211,14 @@ namespace E_commerce.Controllers
         [Route("InviteFriend")]
         public async Task<IActionResult> InviteFriend(string UserID , string FriendEmail)
         {
+            try
+            {
+
             //string url = $"{http://localhost:3000/Registration}";
             var user = await _userManager.FindByIdAsync(UserID);
             if(user==null)
             {
-                return BadRequest(new { message = "There is no user with that Email address." });
+                return BadRequest(new { message = "There is no user." });
             }
             
 
@@ -222,6 +227,11 @@ namespace E_commerce.Controllers
             _friendService.AddFriend(UserID,FriendEmail);
             
             return Ok("You invite your friend");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
         [HttpGet]

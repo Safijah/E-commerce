@@ -221,7 +221,7 @@ namespace Data.Migrations
                     b.Property<string>("CustomerID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("E_mailFriends")
+                    b.Property<string>("EmailFriend")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");

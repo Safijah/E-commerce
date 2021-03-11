@@ -17,18 +17,22 @@ namespace Core.Services
         }
         public void AddFriend(string userID, string email)
         {
-            Friend friend = new Friend() {
-
-            E_mailFriends = email,
-            CustomerID=userID
-            };
             
-            _context.Add(friend);
-            _context.SaveChanges();
+                Friend friend = new Friend()
+                {
+
+                    EmailFriend = email,
+                    CustomerID = userID
+                };
+
+                _context.Add(friend);
+                _context.SaveChanges();
+           
+            
         }
        public  bool CheckFriend(string email)
         {
-            var friend = _context.Friend.Where(a => a.E_mailFriends == email).FirstOrDefault();
+            var friend = _context.Friend.Where(a => a.EmailFriend == email).FirstOrDefault();
             if (friend == null)
                 return false;
             else
@@ -36,7 +40,7 @@ namespace Core.Services
         }
        public  string GetUserID(string email)
         {
-            return _context.Friend.Where(a => a.E_mailFriends == email).FirstOrDefault().CustomerID;
+            return _context.Friend.Where(a => a.EmailFriend == email).FirstOrDefault().CustomerID;
         }
 
     }
