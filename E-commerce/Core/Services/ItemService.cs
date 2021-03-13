@@ -20,23 +20,24 @@ namespace Core.Services
         }
         public GetItemVM GetAll(ItemFilterVM filter )
         {
-            var items = _context.Item.Include(a=>a.GenderSubCategory).ThenInclude(a=>a.SubCategory).Where(a=>(a.BrandCategoryID==filter.BrandCategoryID || filter.BrandCategoryID==0)
-            && (a.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
-           ( a.GenderSubCategory.SubCategoryID==filter.SubCategoryID || filter.SubCategoryID==0)
-           && (a.GenderSubCategory.SubCategory.CategoryID==filter.CategoryID || filter.CategoryID==0))
+            var items = _context.Item.Include(a => a.GenderSubCategory).ThenInclude(a => a.SubCategory).Where(a => (a.BrandCategoryID == filter.BrandCategoryID || filter.BrandCategoryID == 0)
+                && (a.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
+               (a.GenderSubCategory.SubCategoryID == filter.SubCategoryID || filter.SubCategoryID == 0)
+               && (a.GenderSubCategory.SubCategory.CategoryID == filter.CategoryID || filter.CategoryID == 0))
                 .Select(a => new GetItemVM.Rows
-            {
-                ID = a.ID,
-                SerialNumber = a.SerialNumber,
-                Name = a.Name,
-                Description = a.Description,
-                Price = a.Price,
-                BrandCategory = _context.BrandCategory.Where(b => b.ID == a.BrandCategoryID).FirstOrDefault().Name,
-                GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
-                SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
-                Image= _context.ItemImage.Where(f=>f.ItemID==a.ID).FirstOrDefault().Image
+                {
+                    ID = a.ID,
+                    SerialNumber = a.SerialNumber,
+                    Name = a.Name,
+                    Description = a.Description,
+                    Price = a.Price,
+                    BrandCategory = _context.BrandCategory.Where(b => b.ID == a.BrandCategoryID).FirstOrDefault().Name,
+                    GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
+                    SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
+                    Image = _context.ItemImage.Where(f => f.ItemID == a.ID).FirstOrDefault().Image
 
-            }).ToList();
+                }).ToList();
+
             GetItemVM vm = new GetItemVM();
             if (filter.SortTypeID == 2)
             {
@@ -63,18 +64,30 @@ namespace Core.Services
         public GetItemIDVM GetItem(int id)
         {
             var item = _context.Item.Find(id);
-            GetItemIDVM vm = new GetItemIDVM();
-            vm.Description = item.Description;
-            vm.SerialNumber = item.SerialNumber;
-            vm.Name = item.Name;
-            vm.Price = item.Price;
-            vm.BrandCategory = _context.BrandCategory.Where(a => a.ID == item.BrandCategoryID).FirstOrDefault().Name;
             var x = _context.GenderSubCategory.Find(item.GenderSubCategoryID);
             var b = _context.GenderCategory.Find(x.GenderCategoryID);
-            vm.GenderCategory = b.Name;
             var c = _context.SubCategory.Find(x.SubCategoryID);
-            vm.SubCategory = c.Name;
-            vm.Images = _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList();
+            GetItemIDVM vm = new GetItemIDVM()
+            {
+                Description= item.Description,
+                SerialNumber= item.SerialNumber,
+                Name=item.Name,
+                Price=item.Price,
+                BrandCategory= _context.BrandCategory.Where(a => a.ID == item.BrandCategoryID).FirstOrDefault().Name,
+                GenderCategory=b.Name,
+                SubCategory=c.Name,
+                Images= _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList(),
+        };
+        //    vm.Description = item.Description;
+        //    vm.SerialNumber = item.SerialNumber;
+        //    vm.Name = item.Name;
+        //    vm.Price = item.Price;
+        //    vm.BrandCategory = _context.BrandCategory.Where(a => a.ID == item.BrandCategoryID).FirstOrDefault().Name;
+           
+        //    vm.GenderCategory = b.Name;
+            
+        //    vm.SubCategory = c.Name;
+        //    vm.Images = _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList();
             
             var size = _context.ItemSize.Where(a=>a.ItemID==item.ID).ToList();
             List<object> sizes = new List<object>();
