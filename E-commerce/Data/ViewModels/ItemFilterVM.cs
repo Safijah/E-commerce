@@ -11,5 +11,6 @@ namespace Data.ViewModels
         public int SubCategoryID { get; set; }
         public int BrandCategoryID { get; set; }
         public int SortTypeID { get; set; }
+        public int BranchID { get; set; }
     }
 }

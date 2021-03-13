@@ -108,5 +108,27 @@ namespace Core.Services
             return vm;
 
         }
+        public List<ItemVM> GetItem(List<FilterVM> filter)
+        {
+            List<ItemVM> vm = new List<ItemVM>();
+            foreach (var x in filter)
+            {
+                ItemVM item  = _context.Inventory.
+                    Include(a=>a.ItemSize).ThenInclude(a=>a.Item).
+                    Where(a=>a.ItemSize.Size.Name==x.Size && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.ID).
+                    Select(a=> new ItemVM { 
+                    Description=a.ItemSize.Item.Description,
+                    ID=a.ItemSize.ItemID,
+                    Name=a.ItemSize.Item.Name,
+                    Price=a.ItemSize.Item.Price,
+                    Image= _context.ItemImage.Where(b=>b.ItemID==x.ID).FirstOrDefault().Image,
+                    Quantity= a.Quantity
+                    }).FirstOrDefault();
+                vm.Add(item);
+                
+            }
+            return vm;
+        }
+
     }
 }

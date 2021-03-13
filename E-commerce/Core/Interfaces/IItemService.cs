@@ -11,6 +11,7 @@ namespace Core.Interfaces
         GetItemIDVM GetItem(int id);
         GetItemVM GetAll(ItemFilterVM filter);
         GetItemVM GetBySearch(string search);
+        List<ItemVM> GetItem(List<FilterVM> filter);
 
     }
 }

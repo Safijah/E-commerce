@@ -25,9 +25,18 @@ namespace E_commerce.Controllers
 
         }
         [HttpPost]
+      
         public IActionResult Get(ItemFilterVM filter)
         {
+            try
+            {
+
             return Ok(_itemService.GetAll(filter));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -45,6 +54,12 @@ namespace E_commerce.Controllers
             return Ok(_itemService.GetBySearch(search));
         }
 
+        [HttpPost]
+        [Route("GetByFilter")]
+        public IActionResult Get(List<FilterVM> filter)
+        {
+            return Ok(_itemService.GetItem(filter));
+        }
 
     }
 }
