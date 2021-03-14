@@ -15,6 +15,7 @@ namespace Data.ViewModels
         //public float TotalPrice { get; set; }
         public byte[] Image { get; set; }
         public int Quantity { get; set; }
+        public int SentQuantity { get; set; }
 
     }
 }

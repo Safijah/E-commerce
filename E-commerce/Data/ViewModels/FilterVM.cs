@@ -6,10 +6,10 @@ namespace Data.ViewModels
 {
     public class FilterVM
     {
-        public int ID { get; set; }
+        public int id { get; set; }
         public int BranchID { get; set; }
-        public string  Size { get; set; }
-        public int Quantity { get; set; }
+        public string  size { get; set; }
+        public int quantity { get; set; }
 
     }
 }

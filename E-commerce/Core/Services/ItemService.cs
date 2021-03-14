@@ -128,14 +128,16 @@ namespace Core.Services
             {
                 ItemVM item  = _context.Inventory.
                     Include(a=>a.ItemSize).ThenInclude(a=>a.Item).
-                    Where(a=>a.ItemSize.Size.Name==x.Size && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.ID).
+                    Where(a=>a.ItemSize.Size.ID==Int32.Parse(x.size) && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.id).
                     Select(a=> new ItemVM { 
                     Description=a.ItemSize.Item.Description,
                     ID=a.ItemSize.ItemID,
                     Name=a.ItemSize.Item.Name,
                     Price=a.ItemSize.Item.Price,
-                    Image= _context.ItemImage.Where(b=>b.ItemID==x.ID).FirstOrDefault().Image,
-                    Quantity= a.Quantity
+                    Image= _context.ItemImage.Where(b=>b.ItemID==x.id).FirstOrDefault().Image,
+                    Quantity= a.Quantity,
+                    SentQuantity= x.quantity
+
                     }).FirstOrDefault();
                 vm.Add(item);
                 
