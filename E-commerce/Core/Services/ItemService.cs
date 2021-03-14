@@ -133,7 +133,7 @@ namespace Core.Services
                     Where(a=>a.ItemSize.Size.ID==Int32.Parse(x.size) && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.id).
                     Select(a=> new ItemVM { 
                     Description=a.ItemSize.Item.Description,
-                    ID=a.ItemSize.ItemID,
+                    ID=a.ItemSize.ID,
                     Name=a.ItemSize.Item.Name,
                     Price=a.ItemSize.Item.Price,
                     Image= _context.ItemImage.Where(b=>b.ItemID==x.id).FirstOrDefault().Image,
