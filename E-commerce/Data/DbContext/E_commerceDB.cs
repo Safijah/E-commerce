@@ -38,6 +38,7 @@ namespace Data.DbContext
         public DbSet<ItemImage> ItemImage { get; set; }
         public DbSet<GenderSubCategory> GenderSubCategory { get; set; }
         public DbSet<Friend> Friend { get; set; }
+        public DbSet<ForgetPasswordLogger> ForgetPasswordLogger { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
