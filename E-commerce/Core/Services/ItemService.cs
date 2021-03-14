@@ -20,21 +20,23 @@ namespace Core.Services
         }
         public GetItemVM GetAll(ItemFilterVM filter )
         {
-            var items = _context.Item.Include(a => a.GenderSubCategory).ThenInclude(a => a.SubCategory).Where(a => (a.BrandCategoryID == filter.BrandCategoryID || filter.BrandCategoryID == 0)
-                && (a.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
-               (a.GenderSubCategory.SubCategoryID == filter.SubCategoryID || filter.SubCategoryID == 0)
-               && (a.GenderSubCategory.SubCategory.CategoryID == filter.CategoryID || filter.CategoryID == 0))
+            var items = _context.Inventory.Include(a=>a.ItemSize).ThenInclude(a=>a.Item).ThenInclude(a => a.GenderSubCategory).ThenInclude(a => a.SubCategory).
+                Where(a => (a.ItemSize.Item.BrandCategoryID == filter.BrandCategoryID || filter.BrandCategoryID == 0)
+                && (a.ItemSize.Item.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
+               (a.ItemSize.Item.GenderSubCategory.SubCategoryID == filter.SubCategoryID || filter.SubCategoryID == 0)
+               && (a.ItemSize.Item.GenderSubCategory.SubCategory.CategoryID == filter.CategoryID || filter.CategoryID == 0)&& a.IsAvailable==true && a.BranchID==filter.BranchID)
                 .Select(a => new GetItemVM.Rows
                 {
                     ID = a.ID,
-                    SerialNumber = a.SerialNumber,
-                    Name = a.Name,
-                    Description = a.Description,
-                    Price = a.Price,
-                    BrandCategory = _context.BrandCategory.Where(b => b.ID == a.BrandCategoryID).FirstOrDefault().Name,
-                    GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
-                    SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
-                    Image = _context.ItemImage.Where(f => f.ItemID == a.ID).FirstOrDefault().Image
+                    SerialNumber = a.ItemSize.Item.SerialNumber,
+                    Name = a.ItemSize.Item.Name,
+                    Description = a.ItemSize.Item.Description,
+                    Price = a.ItemSize.Item.Price,
+                    BrandCategory = _context.BrandCategory.Where(b => b.ID == a.ItemSize.Item.BrandCategoryID).FirstOrDefault().Name,
+                    GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.ItemSize.Item.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
+                    SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.ItemSize.Item.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
+                    Image = _context.ItemImage.Where(f => f.ItemID == a.ItemSize.ItemID).FirstOrDefault().Image,
+                    BranchID= filter.BranchID
 
                 }).ToList();
 
@@ -61,9 +63,9 @@ namespace Core.Services
 
         }
 
-        public GetItemIDVM GetItem(int id)
+        public GetItemIDVM GetItem(GetItemByIDVM filter)
         {
-            var item = _context.Item.Find(id);
+            var item = _context.Item.Find(filter.id);
             var x = _context.GenderSubCategory.Find(item.GenderSubCategoryID);
             var b = _context.GenderCategory.Find(x.GenderCategoryID);
             var c = _context.SubCategory.Find(x.SubCategoryID);
@@ -89,11 +91,11 @@ namespace Core.Services
         //    vm.SubCategory = c.Name;
         //    vm.Images = _context.ItemImage.Where(a => a.ItemID == item.ID).Select(a => a.Image).ToList();
             
-            var size = _context.ItemSize.Where(a=>a.ItemID==item.ID).ToList();
+            var size = _context.Inventory.Include(a=>a.ItemSize).Where(a=>(a.ItemSize.ItemID==item.ID)&& a.IsAvailable==true && a.BranchID==filter.branchid).ToList();
             List<object> sizes = new List<object>();
             foreach(var k in size)
             {
-                sizes.Add(_context.Size.Where(a => a.ID == k.SizeID ).FirstOrDefault());
+                sizes.Add(_context.Size.Where(a => a.ID == k.ItemSize.SizeID ).FirstOrDefault());
             }
             vm.Sizes = sizes;
             return vm;

@@ -39,11 +39,11 @@ namespace E_commerce.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet]
+        public IActionResult GetById(GetItemByIDVM filter)
         {
            
-                return Ok(_itemService.GetItem(id));
+                return Ok(_itemService.GetItem(filter));
           
 
         }
