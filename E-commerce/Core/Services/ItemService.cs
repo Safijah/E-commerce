@@ -18,52 +18,33 @@ namespace Core.Services
             _context = context;
             
         }
-        public GetItemVM GetAll(ItemFilterVM filter )
+        public GetItemVM GetAll(ItemFilterVM filter)
         {
-            var items = _context.Inventory.Include(a=>a.ItemSize).ThenInclude(a=>a.Item).ThenInclude(a => a.GenderSubCategory).ThenInclude(a => a.SubCategory).
-                Where(a => (a.ItemSize.Item.BrandCategoryID == filter.BrandCategoryID || filter.BrandCategoryID == 0)
-                && (a.ItemSize.Item.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
-               (a.ItemSize.Item.GenderSubCategory.SubCategoryID == filter.SubCategoryID || filter.SubCategoryID == 0)
-               && (a.ItemSize.Item.GenderSubCategory.SubCategory.CategoryID == filter.CategoryID || filter.CategoryID == 0)&& a.IsAvailable==true && a.BranchID==filter.BranchID)
+            GetItemVM vm = new GetItemVM();
+
+            vm.Items = _context.Item.
+                Where(a => (a.BrandCategoryID == filter.BrandCategoryID || filter.BrandCategoryID == 0)
+                && (a.GenderSubCategory.GenderCategoryID == filter.GenderCategoryID || filter.GenderCategoryID == 0) &&
+               (a.GenderSubCategory.SubCategoryID == filter.SubCategoryID || filter.SubCategoryID == 0)
+               && (a.GenderSubCategory.SubCategory.CategoryID == filter.CategoryID || filter.CategoryID == 0))
                 .Select(a => new GetItemVM.Rows
                 {
                     ID = a.ID,
-                    SerialNumber = a.ItemSize.Item.SerialNumber,
-                    Name = a.ItemSize.Item.Name,
-                    Description = a.ItemSize.Item.Description,
-                    Price = a.ItemSize.Item.Price,
-                    BrandCategory = _context.BrandCategory.Where(b => b.ID == a.ItemSize.Item.BrandCategoryID).FirstOrDefault().Name,
-                    GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.ItemSize.Item.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
-                    SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.ItemSize.Item.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
-                    Image = _context.ItemImage.Where(f => f.ItemID == a.ItemSize.ItemID).FirstOrDefault().Image,
-                    BranchID= filter.BranchID
+                    SerialNumber = a.SerialNumber,
+                    Name = a.Name,
+                    Description = a.Description,
+                    Price = a.Price,
+                    BrandCategory = _context.BrandCategory.Where(b => b.ID == a.BrandCategoryID).FirstOrDefault().Name,
+                    GenderCategory = _context.GenderSubCategory.Where(c => c.ID == a.GenderSubCategoryID).FirstOrDefault().GenderCategory.Name,
+                    SubCategory = _context.GenderSubCategory.Where(d => d.ID == a.GenderSubCategoryID).FirstOrDefault().SubCategory.Name,
+                    Image = _context.ItemImage.Where(f => f.ItemID == a.ID).FirstOrDefault().Image,
+                    BranchID = filter.BranchID
 
                 }).ToList();
-
-            GetItemVM vm = new GetItemVM();
-            if (filter.SortTypeID == 2)
-            {
-                vm.Items = items.OrderByDescending(a => a.Price).ToList();
-            }
-            else
-                if (filter.SortTypeID == 3)
-            {
-                vm.Items = items.OrderBy(a => a.Name).ToList();
-            }
-            else
-                if (filter.SortTypeID == 1)
-            {
-                vm.Items = items.OrderBy(a => a.Price).ToList();
-            }
-            else
-                vm.Items = items;
-                
             return vm;
-
-
         }
 
-        public GetItemIDVM GetItem(GetItemByIDVM filter)
+            public GetItemIDVM GetItem(GetItemByIDVM filter)
         {
             var item = _context.Item.Find(filter.id);
             var x = _context.GenderSubCategory.Find(item.GenderSubCategoryID);
@@ -130,10 +111,10 @@ namespace Core.Services
             {
                 ItemVM item  = _context.Inventory.
                     Include(a=>a.ItemSize).ThenInclude(a=>a.Item).
-                    Where(a=>a.ItemSize.Size.ID==Int32.Parse(x.size) && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.id).
+                    Where(a=>a.ItemSize.Size.ID==x.size && a.IsAvailable==true && a.BranchID==x.BranchID && a.ItemSize.ItemID==x.id).
                     Select(a=> new ItemVM { 
                     Description=a.ItemSize.Item.Description,
-                    ID=a.ItemSize.ID,
+                    ID=a.ID,
                     Name=a.ItemSize.Item.Name,
                     Price=a.ItemSize.Item.Price,
                     Image= _context.ItemImage.Where(b=>b.ItemID==x.id).FirstOrDefault().Image,

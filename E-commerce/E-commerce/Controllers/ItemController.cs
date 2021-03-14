@@ -40,9 +40,9 @@ namespace E_commerce.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetById(GetItemByIDVM filter)
+        public IActionResult GetById(int id, int branchid)
         {
-           
+            GetItemByIDVM filter = new GetItemByIDVM { id = id, branchid = branchid };
                 return Ok(_itemService.GetItem(filter));
           
 

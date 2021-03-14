@@ -8,7 +8,7 @@ namespace Data.ViewModels
     {
         public int id { get; set; }
         public int BranchID { get; set; }
-        public string  size { get; set; }
+        public int  size { get; set; }
         public int quantity { get; set; }
 
     }
