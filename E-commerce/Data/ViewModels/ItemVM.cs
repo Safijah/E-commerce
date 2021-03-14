@@ -16,6 +16,10 @@ namespace Data.ViewModels
         public byte[] Image { get; set; }
         public int Quantity { get; set; }
         public int SentQuantity { get; set; }
+        public string Size { get; set; }
+        public string SerialNumber { get; set; }
+
+
 
     }
 }

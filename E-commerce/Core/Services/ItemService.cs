@@ -136,7 +136,9 @@ namespace Core.Services
                     Price=a.ItemSize.Item.Price,
                     Image= _context.ItemImage.Where(b=>b.ItemID==x.id).FirstOrDefault().Image,
                     Quantity= a.Quantity,
-                    SentQuantity= x.quantity
+                    SentQuantity= x.quantity,
+                    Size=a.ItemSize.Size.Name,
+                    SerialNumber=a.ItemSize.Item.SerialNumber
 
                     }).FirstOrDefault();
                 vm.Add(item);
