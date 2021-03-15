@@ -9,7 +9,7 @@ namespace Data.EntityModels
         public int ID { get; set; }
         public string Code { get; set; }
         public DateTime ExpiredDate { get; set; }
-        public float Value { get; set; }
+        public double Value { get; set; }
         public bool IsValid { get; set; }
     }
 }
