@@ -35,7 +35,7 @@ namespace Core.Services
                 Token stripeToken = await serviceToken.CreateAsync(optionsToken);
                 var options = new ChargeCreateOptions
                 {
-                    Amount = vm.TotalPrice,
+                    Amount =(int)vm.TotalPrice ,
                     Currency = "usd",
                     Description = "test",
                     Source = stripeToken.Id

@@ -22,10 +22,20 @@ namespace E_commerce.Controllers
             _shoppingCartService = shoppingCartService;
         }
         [HttpPost]
-        public IActionResult ShoppingCart(ShoppingCartVM vm)
+        public async Task<IActionResult> ShoppingCartAsync(ShoppingCartVM vm)
         {
-            _shoppingCartService.ShoppingCartAsync(vm);
-            return Ok("Provjeri bazu");
+            try
+            {
+
+            await _shoppingCartService.ShoppingCartAsync(vm);
+            return Ok("Successful purchase");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
     }
 }

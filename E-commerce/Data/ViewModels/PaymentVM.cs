@@ -10,7 +10,7 @@ namespace Data.ViewModels
         public int Month { get; set; }
         public int Year { get; set; }
         public string Cvc { get; set; }
-        public int TotalPrice { get; set; }
+        public float TotalPrice { get; set; }
         public string CustomerID { get; set; }
     }
 }

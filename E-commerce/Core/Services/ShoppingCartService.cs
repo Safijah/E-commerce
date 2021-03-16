@@ -62,7 +62,7 @@ namespace Core.Services
             };
             _context.Add(ShoppingCart);
             _context.SaveChanges();
-            foreach(var x in cart.Orders)
+            foreach (var x in cart.Orders)
             {
                 var order = new Order()
                 {
@@ -98,16 +98,20 @@ namespace Core.Services
                  await _emailService.SendEmailAsync( user.Email, "E-commerce", "<h1>Congratulations, you have won a gift bonus</h1>" +
                     $"<p>Use the following discount code for your next purchase " + coupon.Code + "</p>");
             }
-                _context.SaveChanges();
+            _context.SaveChanges();
             var vm = new PaymentVM()
             {
                 CardNumber = cart.cardnumber,
                 Month = cart.month,
                 Year = cart.year,
-                Cvc = cart.cvc
+                Cvc = cart.cvc,
+                TotalPrice=cart.totalprice
             };
-            if(await _paymentService.PayAsync(vm)=="succes")
+            if (cart.paymentmethodId == 1)
             {
+
+                await _paymentService.PayAsync(vm);
+            
                 if(_context.CreditCard.FirstOrDefault(a=>a.CardNumber==vm.CardNumber && a.CustomerID==cart.customerId)==null)
                 {
 
@@ -122,7 +126,18 @@ namespace Core.Services
                     _context.Add(card);
                     _context.SaveChanges();
                 }
+            
             }
+            var history = new HistoryOfPayments()
+            {
+                CustomerID = cart.customerId,
+                CheckID = check.ID,
+                Date = DateTime.Now,
+                Price = cart.totalprice
+
+            };
+            _context.Add(history);
+            _context.SaveChanges();
         }
     }
 }
