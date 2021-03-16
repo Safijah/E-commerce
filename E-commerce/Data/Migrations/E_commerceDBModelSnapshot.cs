@@ -146,8 +146,8 @@ namespace Data.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
 
                     b.HasKey("ID");
 
@@ -209,6 +209,26 @@ namespace Data.Migrations
                     b.HasIndex("BranchID");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("Data.EntityModels.ForgetPasswordLogger", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("ForgetPasswordLogger");
                 });
 
             modelBuilder.Entity("Data.EntityModels.Friend", b =>
@@ -897,6 +917,13 @@ namespace Data.Migrations
                         .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Data.EntityModels.ForgetPasswordLogger", b =>
+                {
+                    b.HasOne("Data.EntityModels.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
                 });
 
             modelBuilder.Entity("Data.EntityModels.Friend", b =>

@@ -87,10 +87,16 @@ namespace E_commerce.Controllers
                     {
                         var CustomerID = _friendService.GetUserID(user.Email);
                         var customer1 = await _userManager.FindByIdAsync(CustomerID);
-
-                        var code = _couponService.GetCode();
+                        Coupon coupon = new Coupon()
+                        {
+                            Code = _couponService.GenerateChode(),
+                            IsValid = true,
+                            Value = 0.10
+                        };
+                        _couponService.AddCoupon(coupon);
+                       
                         await _emailService.SendEmailAsync(customer1.Email, "E-commerce", "<h1>Your friend accepted your invitation</h1>" +
-                            $"<p>Use the following discount code for your next purchase " + code + "</p>");
+                            $"<p>Use the following discount code for your next purchase " + coupon.Code + "</p>");
 
                     }
 

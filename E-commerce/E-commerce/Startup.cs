@@ -73,6 +73,8 @@ namespace E_commerce
             services.AddTransient<ISortTypeService, SortTypeService>();
             services.AddTransient<IFriendService, FriendService>();
             services.AddTransient<IBranchService, BranchService>();
+            services.AddTransient< IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<IPaymentMethodService, PaymentMethodService>();
             services.AddRazorPages();
             services.AddCors(options =>
             {
