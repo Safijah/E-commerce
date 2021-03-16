@@ -24,7 +24,7 @@ namespace E_commerce.Controllers
         [HttpPost]
         public IActionResult ShoppingCart(ShoppingCartVM vm)
         {
-            _shoppingCartService.ShoppingCart(vm);
+            _shoppingCartService.ShoppingCartAsync(vm);
             return Ok("Provjeri bazu");
         }
     }

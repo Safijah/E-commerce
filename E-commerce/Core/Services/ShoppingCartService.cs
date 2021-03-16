@@ -6,18 +6,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace Core.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
         private E_commerceDB _context;
-        public ShoppingCartService(E_commerceDB context)
+        private IEmailService _emailService;
+        private ICouponService _couponService;
+        private UserManager<Account> _userManager;
+        public ShoppingCartService(E_commerceDB context, IEmailService emailService, ICouponService couponService, UserManager<Account> userManager)
         {
             _context = context;
+            _emailService = emailService;
+            _userManager = userManager;
+            _couponService = couponService;
         }
-        public void ShoppingCart(ShoppingCartVM cart)
+        public async Task   ShoppingCartAsync(ShoppingCartVM cart)
         {
+
+            Check check = new Check()
+            {
+                Price = cart.totalprice,
+                TotalPrice = cart.totalprice,
+                DateTime = DateTime.Now,
+                PaymentMethodID = cart.paymentmethodId,
+                FirstName=cart.firstname,
+                LastName=cart.lastname
+            };
+            if (cart.coupon != null)
+            {
+                var coupon = _context.Coupon.First(a => a.Code == cart.coupon);
+                coupon.IsValid = false;
+                _context.SaveChanges();
+                check.CouponID = coupon.ID;
+                check.Discount = coupon.Value;
+            }
+            _context.Add(check);
+            _context.SaveChanges();
             ShoppingCart ShoppingCart = new ShoppingCart() 
             {
             TotalPrice=cart.totalprice,
@@ -26,7 +54,7 @@ namespace Core.Services
             City=cart.city,
             CustomerID=cart.customerId,
             BranchID=cart.branchId,
-            CheckID=5
+            CheckID=check.ID
 
             };
             _context.Add(ShoppingCart);
@@ -37,6 +65,7 @@ namespace Core.Services
                 {
                     Date = DateTime.Now,
                     UnitCost = x.unitcost,
+                    TotalPrice=x.totalpriceitem,
                     Quantity = x.quantity,
                     ItemSizeID = x.itemsizeId,
                     ShoppingCartID = ShoppingCart.ID
@@ -53,6 +82,19 @@ namespace Core.Services
             }
                 var customer = _context.Customer.First(a => a.ID == ShoppingCart.CustomerID);
                 customer.TotalSpent += ShoppingCart.TotalPrice;
+            if(customer.TotalSpent>=1000)
+            {
+                Coupon coupon = new Coupon()
+                {
+                    Code = _couponService.GenerateChode(),
+                    IsValid = true,
+                    Value = 0.10
+                };
+                _couponService.AddCoupon(coupon);
+                var user = await _userManager.FindByIdAsync(cart.customerId);
+                 await _emailService.SendEmailAsync( user.Email, "E-commerce", "<h1>Congratulations, you have won a gift bonus</h1>" +
+                    $"<p>Use the following discount code for your next purchase " + coupon.Code + "</p>");
+            }
                 _context.SaveChanges();
         }
     }

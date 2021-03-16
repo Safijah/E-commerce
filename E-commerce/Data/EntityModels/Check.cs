@@ -9,8 +9,10 @@ namespace Data.EntityModels
     {
         public int ID { get; set; }
         public float Price { get; set; }
-        public float Discount { get; set; }
+        public double Discount { get; set; }
         public float TotalPrice { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime DateTime { get; set; }
         [ForeignKey(nameof(PaymentMethodID))]
         public virtual PaymentMethod PaymentMethod { get; set; }

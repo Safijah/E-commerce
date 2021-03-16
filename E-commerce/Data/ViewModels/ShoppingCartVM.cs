@@ -24,6 +24,15 @@ namespace Data.ViewModels
         public string customerId { get; set; }
         public int branchId { get; set; }
         public string coupon { get; set; }
+        public int paymentmethodId { get; set; }
+        public string cardnumber { get; set; }
+        public int month { get; set; }
+        public int year { get; set; }
+        public string cvc { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+
+
 
 
     }

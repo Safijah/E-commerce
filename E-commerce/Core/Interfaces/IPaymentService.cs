@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-   public  interface IShoppingCartService
+    public interface IPaymentService
     {
-        public  Task ShoppingCartAsync(ShoppingCartVM cart);
+        Task<dynamic> PayAsync(PaymentVM vm);
     }
 }
