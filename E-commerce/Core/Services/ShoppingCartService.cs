@@ -16,13 +16,16 @@ namespace Core.Services
         private E_commerceDB _context;
         private IEmailService _emailService;
         private ICouponService _couponService;
+        private IPaymentService _paymentService;
         private UserManager<Account> _userManager;
-        public ShoppingCartService(E_commerceDB context, IEmailService emailService, ICouponService couponService, UserManager<Account> userManager)
+        public ShoppingCartService(E_commerceDB context, IEmailService emailService, ICouponService couponService, UserManager<Account> userManager,
+            IPaymentService paymentService)
         {
             _context = context;
             _emailService = emailService;
             _userManager = userManager;
             _couponService = couponService;
+            _paymentService = paymentService;
         }
         public async Task   ShoppingCartAsync(ShoppingCartVM cart)
         {
@@ -96,6 +99,30 @@ namespace Core.Services
                     $"<p>Use the following discount code for your next purchase " + coupon.Code + "</p>");
             }
                 _context.SaveChanges();
+            var vm = new PaymentVM()
+            {
+                CardNumber = cart.cardnumber,
+                Month = cart.month,
+                Year = cart.year,
+                Cvc = cart.cvc
+            };
+            if(await _paymentService.PayAsync(vm)=="succes")
+            {
+                if(_context.CreditCard.FirstOrDefault(a=>a.CardNumber==vm.CardNumber && a.CustomerID==cart.customerId)==null)
+                {
+
+                var card = new CreditCard()
+                {
+                    CardNumber = vm.CardNumber,
+                    ExpMonth = vm.Month,
+                    ExpYear = vm.Year,
+                    Cvc = vm.Cvc,
+                    CustomerID = cart.customerId
+                };
+                    _context.Add(card);
+                    _context.SaveChanges();
+                }
+            }
         }
     }
 }
