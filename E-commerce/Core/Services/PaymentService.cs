@@ -44,6 +44,7 @@ namespace Core.Services
                 Charge charge = await service.CreateAsync(options);
                 if (charge.Paid)
                 {
+                    
                     return "Succes";
                 }
                 else

@@ -64,16 +64,17 @@ namespace Core.Services
             _context.SaveChanges();
             foreach (var x in cart.Orders)
             {
+                var itemsizeID = _context.Inventory.First(a => a.ID == x.inventoryId && a.BranchID == cart.branchId).ItemSizeID;
                 var order = new Order()
                 {
                     Date = DateTime.Now,
                     UnitCost = x.unitcost,
                     TotalPrice=x.totalpriceitem,
                     Quantity = x.quantity,
-                    ItemSizeID = x.itemsizeId,
+                    ItemSizeID = itemsizeID,
                     ShoppingCartID = ShoppingCart.ID
                 };
-                var inventory = _context.Inventory.First(a=>a.ID==x.inventoryId && a.ItemSizeID==x.itemsizeId && a.BranchID== cart.branchId);
+                var inventory = _context.Inventory.First(a=>a.ID==x.inventoryId && a.ItemSizeID==itemsizeID && a.BranchID== cart.branchId);
                 inventory.Quantity = inventory.Quantity - x.quantity;
                 if (inventory.Quantity <= 0)
                 {
@@ -97,6 +98,7 @@ namespace Core.Services
                 var user = await _userManager.FindByIdAsync(cart.customerId);
                  await _emailService.SendEmailAsync( user.Email, "E-commerce", "<h1>Congratulations, you have won a gift bonus</h1>" +
                     $"<p>Use the following discount code for your next purchase " + coupon.Code + "</p>");
+                customer.TotalSpent = 0;
             }
             _context.SaveChanges();
             var vm = new PaymentVM()
@@ -124,6 +126,13 @@ namespace Core.Services
                     CustomerID = cart.customerId
                 };
                     _context.Add(card);
+                    _context.SaveChanges();
+                    ShoppingCart.CreditCardID = card.ID;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    ShoppingCart.CreditCardID = _context.CreditCard.FirstOrDefault(a => a.CardNumber == vm.CardNumber && a.CustomerID == cart.customerId).ID;
                     _context.SaveChanges();
                 }
             

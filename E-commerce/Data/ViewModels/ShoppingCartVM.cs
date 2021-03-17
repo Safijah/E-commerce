@@ -12,7 +12,7 @@ namespace Data.ViewModels
            public int quantity { get; set; }
             //public float discount { get; set; }
             public float totalpriceitem { get; set; }
-            public int itemsizeId{ get; set; }
+            
             public int inventoryId { get; set; }
             
 
