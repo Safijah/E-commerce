@@ -8,7 +8,7 @@ namespace Core.Interfaces
     public interface ICouponService
     {
         string GetCode();
-        bool CheckCode(string code);
+        double CheckCode(string code);
         public string GenerateChode();
         public void AddCoupon(Coupon coupon);
     }

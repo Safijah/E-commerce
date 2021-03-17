@@ -23,10 +23,8 @@ namespace E_commerce.Controllers
         [HttpGet]
         public IActionResult Get(string code)
         {
-            if (_couponService.CheckCode(code))
-                return Ok("Code is valid");
-            else
-                return BadRequest("Code is invalid");
+            return Ok(_couponService.CheckCode(code));
+              
               
            
         }

@@ -27,12 +27,12 @@ namespace Core.Services
         {
             return _context.Coupon.Where(a => a.IsValid == true).FirstOrDefault().Code;
         }
-       public  bool CheckCode(string code)
+       public  double  CheckCode(string code)
         {
             if (_context.Coupon.FirstOrDefault(a => a.Code == code && a.IsValid==true) != null)
-                return true;
+                return _context.Coupon.FirstOrDefault(a => a.Code == code && a.IsValid == true).Value;
             else
-                return false;
+                return 0;
 
         }
         public void AddCoupon(Coupon coupon)
