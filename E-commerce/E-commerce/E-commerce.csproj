@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>E_commerce</RootNamespace>
+    <UserSecretsId>1d40708e-45dd-445a-aa3b-244d4336aa13</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
