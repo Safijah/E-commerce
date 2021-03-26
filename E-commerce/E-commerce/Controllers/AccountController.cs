@@ -229,7 +229,7 @@ namespace E_commerce.Controllers
             
 
             await _emailService.SendEmailAsync(FriendEmail, "E-commerce", "<h1>Your friend "+user.FirstName+" "+ user.LastName+ " invite you to join us</h1>" +
-                $"<p>To send  your friend coupon please <a href='https://www.customer.app.fit.ba/Registration'>Register</a></p>");
+                $"<p>To send  your friend coupon please <button onclick={"Window.location='https://www.customer.app.fit.ba/Registration'"}>Register</button></p>");
             _friendService.AddFriend(UserID,FriendEmail);
             
             return Ok("You invite your friend");
