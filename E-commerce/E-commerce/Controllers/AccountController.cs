@@ -79,7 +79,7 @@ namespace E_commerce.Controllers
                     var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
                     var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
 
-                    string url = $"{_configuration["AppUrl"]}/account/confirmemail?userid={user.Id}&token={validEmailToken}";
+                    string url = $"https://www.api.customer.app.fit.ba/account/confirmemail?userid={user.Id}&token={validEmailToken}";
 
                     await _emailService.SendEmailAsync(user.Email, "Confirm your email", $"<h1>Hi,</h1>" +
                         $"<p>Please confirm your email by <a href='{url}'>Clicking here</a></p>");
@@ -181,7 +181,7 @@ namespace E_commerce.Controllers
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={email}&token={validToken}";
+            string url = $"https://www.api.customer.app.fit.ba/ResetPassword?email={email}&token={validToken}";
 
             await _emailService.SendEmailAsync(email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
                 $"<p>To reset your password <a href='{url}'>Click here</a></p>");
@@ -229,7 +229,7 @@ namespace E_commerce.Controllers
             
 
             await _emailService.SendEmailAsync(FriendEmail, "E-commerce", "<h1>Your friend "+user.FirstName+" "+ user.LastName+ " invite you to join us</h1>" +
-                $"<p>To send  your friend coupon please <button onclick={"Window.location='https://www.customer.app.fit.ba/Registration'"}>Register</button></p>");
+                $"<p>To send  your friend coupon please <a href='https://www.customer.app.fit.ba/Registration'> Register</a></p>");
             _friendService.AddFriend(UserID,FriendEmail);
             
             return Ok("You invite your friend");
